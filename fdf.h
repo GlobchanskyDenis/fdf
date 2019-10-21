@@ -11,13 +11,12 @@ typedef struct 	s_pos
 	int		color;
 }				t_pos;
 
-
 typedef struct	s_fdf
 {
 	int		fd;
-	short	color_exists;
-	short	arr_x_size;
-	short	arr_y_size;
+	int		color_exists;
+	int		arr_x_size;
+	int		arr_y_size;
 	char	**arr;
 	t_pos	*pos_arr;
 	char	*line;
