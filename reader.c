@@ -1,12 +1,22 @@
 #include "fdf.h"
 
-int		extract_color(char *str)
+int		extract_color(char *str, t_fdf *s)
 {
-	int		dst;
+	int		color;
 
-	if (!str)
-		return (0);
-	
+	if (!str || !s)
+		free_exit(s, "extract_color null pointer found");
+	s->color_exist = 1;
+	str++;
+	if (str[0] == '0' && str[1] == 'x')
+		color = ft_atoi_base((str + 2), 16);
+	else if (str[0] == '0' && str[1] == 'o')
+		color = ft_atoi_base((str + 2), 8);
+	else if (str[0] == '0' && str[1] == 'b')
+		color = ft_atoi_base((str + 2), 2);
+	else
+		color = atoi(str);
+	return (color);
 }
 
 t_pos	**make_bigger_array(t_pos **old_arr, t_pos *new_element)
@@ -35,23 +45,28 @@ t_pos	**make_bigger_array(t_pos **old_arr, t_pos *new_element)
 	return (dst);
 }
 
-t_pos	make_pos(char *str, int x, int y)
+t_pos	make_pos(char *str, int x, int y, t_fdf *s)
 {
 	t_pos	pos;
 	char	*tmp;
 
+	if (!str || !s)
+		free_exit(s, "make_pos - null pointer found");
 	ft_bzero(&pos, sizeof(t_pos));
 	pos.x = x;
 	pos.y = y;
-	if (!str)
-		return (t_pos);
 	pos.z = ft_atoi(str);
 	if (!(tmp = ft_itoa(pos.z))
 		fprint("mad itoa\n");
 	else
 	{
-		if (strcmp(tmp, str) && )
-			pos.color = extract_color(str);
+		if (strcmp(tmp, str) && ft_strchr(str, '.'))
+			pos.color = extract_color(ft_strchr(str, '.'), s);
+		else if (strcmp(tmp, str))
+		{
+			ft_strdel(&tmp);
+			free_exit(s, "bad string");
+		}
 		ft_strdel(&tmp);
 	}
 	return (pos);
@@ -68,7 +83,7 @@ t_pos	*make_pos_arr(char **char_arr, int y, t_fdf *s)
 		free_exit(s, "make_pos_arr - malloc returned null");
 	i = 0;
 	while (char_arr[i])
-		arr[i] = make_pos(char_arr[i++], i + 1, y);
+		arr[i] = make_pos(char_arr[i++], i + 1, y, s);
 	return (arr);
 }
 
