@@ -36,6 +36,48 @@ static t_fdf	*create_fdf_struct(char **av)
 	return (s);
 }
 
+/*
+void			tmp_write_pos_arr(t_fdf *s)
+{
+	t_pos	**arr;
+	t_pos	*tab;
+	int		i;
+	int		j;
+
+	if (!s)
+		return ;
+	arr = s->pos_arr;
+	i = 0;
+	while (arr[i])
+	{
+		tab = arr[i];
+		j = 0;
+		while (j < s->arr_x_size)
+		{
+			fprint("%d %d %d\t", tab[j].x, tab[j].y, tab[j].z);
+			j++;
+		}
+		fprint("\n");
+		i++;
+	}
+}
+*/
+
+void			loop(t_fdf *s)
+{
+	if (!s)
+		free_exit(s, "loop - null pointer found");
+	fprint("=== grafix start ===\n");
+	start_calc(s);
+	//create_images();
+	if (!(s->mlx = mlx_init()) || !(s->win = mlx_new_window(s->mlx, WIN_SIZE_HOR, WIN_SIZE_VERT, "fdf by bsabre-c")))
+		free_exit(s, "loop - error in opening window");
+	mlx_loop_hook(s->mlx, loop_hook, s);
+	mlx_key_hook(s->win, key_hook, s);
+	mlx_mouse_hook(s->win, mouse_hook, s);
+	mlx_loop(s->mlx);
+}
+
 int				main(int ac, char **av)
 {
 	t_fdf	*s;
@@ -43,9 +85,10 @@ int				main(int ac, char **av)
 	if (ac != 2 || !av)
 		return (wrong_params(ac, av));
 	if (!(s = create_fdf_struct(av)))
-		return (1);
+		free_exit(s, "create_fdf_struct returned null");
 	read_file(s);
-	//loop(s);
+	//tmp_write_pos_arr(s);
+	loop(s);
 	free_exit(s, NULL);
 	return (0);
 }

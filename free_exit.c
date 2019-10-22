@@ -38,6 +38,8 @@ void	free_exit(t_fdf *s, char *message)
 			delete_arr(&(s->arr));
 		if (s->pos_arr)
 			delete_pos_arr(&(s->pos_arr));
+		if (s->cpy_arr)
+			delete_pos_arr(&(s->cpy_arr));
 		if (s->line)
 			ft_strdel(&(s->line));
 		if (s->win)

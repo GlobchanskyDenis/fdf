@@ -14,18 +14,20 @@ static int	char_to_int_convert(char ch)
 int			ft_atoi_base(const char *str, int base)
 {
 	int		dst;
+	short	len;
 	short	i;
 
 	if (!str)
 		return (0);
-	i = 0;
-	while (ft_isalnum(str[i]))
-		i++;
+	len = 0;
+	while (ft_isalnum(str[len]))
+		len++;
 	dst = 0;
-	while (i >= 0)
+	i = 0;
+	while (i < len)
 	{
 		dst = dst * base;
-		dst += char_to_int_convert(str[i--]);
+		dst += char_to_int_convert(str[i++]);
 	}
 	return (dst);
 }
