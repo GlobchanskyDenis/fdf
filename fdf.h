@@ -61,4 +61,6 @@ int			loop_hook(t_fdf *s);
 void		start_calc(t_fdf *s);
 void		set_minmax_z(t_fdf *s, int z);
 
+void		redraw(t_fdf *s);
+
 #endif

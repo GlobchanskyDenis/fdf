@@ -67,7 +67,7 @@ void			loop(t_fdf *s)
 		free_exit(s, "loop - null pointer found");
 	fprint("=== grafix start ===\n");
 	start_calc(s);
-	tmp_write_pos_arr(s, s->cpy_arr);
+	//tmp_write_pos_arr(s, s->cpy_arr);
 	//create_images();
 	if (!(s->mlx = mlx_init()) || !(s->win = mlx_new_window(s->mlx, WIN_SIZE_HOR, WIN_SIZE_VERT, "fdf by bsabre-c")))
 		free_exit(s, "loop - error in opening window");
@@ -86,7 +86,7 @@ int				main(int ac, char **av)
 	if (!(s = create_fdf_struct(av)))
 		free_exit(s, "create_fdf_struct returned null");
 	read_file(s);
-	tmp_write_pos_arr(s, s->pos_arr);
+	//tmp_write_pos_arr(s, s->pos_arr);
 	loop(s);
 	free_exit(s, NULL);
 	return (0);
