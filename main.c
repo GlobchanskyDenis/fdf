@@ -36,17 +36,15 @@ static t_fdf	*create_fdf_struct(char **av)
 	return (s);
 }
 
-/*
-void			tmp_write_pos_arr(t_fdf *s)
+
+void			tmp_write_pos_arr(t_fdf *s, t_pos **arr)
 {
-	t_pos	**arr;
 	t_pos	*tab;
 	int		i;
 	int		j;
 
 	if (!s)
 		return ;
-	arr = s->pos_arr;
 	i = 0;
 	while (arr[i])
 	{
@@ -61,7 +59,7 @@ void			tmp_write_pos_arr(t_fdf *s)
 		i++;
 	}
 }
-*/
+
 
 void			loop(t_fdf *s)
 {
@@ -69,6 +67,7 @@ void			loop(t_fdf *s)
 		free_exit(s, "loop - null pointer found");
 	fprint("=== grafix start ===\n");
 	start_calc(s);
+	tmp_write_pos_arr(s, s->cpy_arr);
 	//create_images();
 	if (!(s->mlx = mlx_init()) || !(s->win = mlx_new_window(s->mlx, WIN_SIZE_HOR, WIN_SIZE_VERT, "fdf by bsabre-c")))
 		free_exit(s, "loop - error in opening window");
@@ -87,7 +86,7 @@ int				main(int ac, char **av)
 	if (!(s = create_fdf_struct(av)))
 		free_exit(s, "create_fdf_struct returned null");
 	read_file(s);
-	//tmp_write_pos_arr(s);
+	tmp_write_pos_arr(s, s->pos_arr);
 	loop(s);
 	free_exit(s, NULL);
 	return (0);

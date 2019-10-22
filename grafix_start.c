@@ -48,20 +48,18 @@ static void	make_cpy_arr(t_fdf *s)
 			free_exit(s, "start_calc - malloc error");
 		ft_bzero(s->cpy_arr[i], sizeof(t_pos) * s->arr_x_size);
 		j = -1;
-		while (j++ < s->arr_x_size)
+		while (++j < s->arr_x_size)
 			set_point_color(s, &(s->cpy_arr[i][j]), &(s->pos_arr[i][j]));
 	}
 }
 
 void		start_calc(t_fdf *s)
 {
-
-
 	if (!s)
 		free_exit(s, "start_calc - empty pointer found");
 	s->temp_val = 100;
 	s->camera_x = 100;
 	s->camera_y = 100;
 	s->is_need_to_redraw = 1;
-
+	make_cpy_arr(s);
 }

@@ -32,12 +32,14 @@ typedef struct	s_fdf
 	int		fd;
 	int		color_exists;
 	int		is_need_to_redraw;
+	int		init_started;
 	int		arr_x_size;
 	int		arr_y_size;
 	int		temp_val;
 	int		camera_x;
 	int		camera_y;
 	int		max_z;
+	int		min_z;
 	char	**arr;
 	t_pos	**pos_arr;
 	t_pos	**cpy_arr;
@@ -57,5 +59,6 @@ int			mouse_hook(int param, int x, int y, t_fdf *s);
 int			loop_hook(t_fdf *s);
 
 void		start_calc(t_fdf *s);
+void		set_minmax_z(t_fdf *s, int z);
 
 #endif

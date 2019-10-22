@@ -41,7 +41,6 @@ t_pos	**make_bigger_pos_arr(t_pos **old_arr, t_pos *new_element)
 	while (--arr_len >= 0)
 		dst[arr_len] = old_arr[arr_len];
 	free(old_arr);
-	//fprint("new t_pos array\n");
 	return (dst);
 }
 
@@ -56,6 +55,7 @@ t_pos	make_pos(char *str, int x, int y, t_fdf *s)
 	pos.x = x;
 	pos.y = y;
 	pos.z = ft_atoi(str);
+	set_minmax_z(s, pos.z);
 	if (!(tmp = ft_itoa(pos.z)))
 		fprint("mad itoa\n");
 	else
@@ -64,7 +64,6 @@ t_pos	make_pos(char *str, int x, int y, t_fdf *s)
 			pos.color = extract_color(ft_strchr(str, '.'), s);
 		else if (strcmp(tmp, str))
 		{
-			//fprint("tmp %s\nstr %s\n", tmp, str);
 			ft_strdel(&tmp);
 			free_exit(s, "bad string");
 		}
@@ -85,7 +84,6 @@ t_pos	*make_pos_arr(char **char_arr, int y, t_fdf *s)
 	i = -1;
 	while (char_arr[++i])
 		arr[i] = make_pos(char_arr[i], i + 1, y, s);
-	s->arr_y_size = i + 1;
 	return (arr);
 }
 

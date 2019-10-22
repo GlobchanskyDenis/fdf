@@ -7,7 +7,8 @@ DIR		=	./
 # files
 SRC			=	$(DIR)main.c					$(DIR)free_exit.c	\
 				$(DIR)gnl.c						$(DIR)hooks.c		\
-				$(DIR)reader.c					$(DIR)grafix_start.c
+				$(DIR)reader.c					$(DIR)grafix_start.c\
+				$(DIR)redraw.c
 HEAD		= 	$(DIR)fdf.h
 MLX			= 	mlx/libmlx.a -lmlx -framework OpenGL -framework AppKit
 
