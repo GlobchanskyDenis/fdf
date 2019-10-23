@@ -112,5 +112,6 @@ int					ft_min_i(int n1, int n2);
 size_t				count_words(char **arr);
 void				ft_lstdel_fag(t_list **list);
 int					ft_atoi_base(const char *str, int base);
+int					ft_mini(int a, int b);
 
 #endif

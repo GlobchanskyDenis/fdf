@@ -37,7 +37,7 @@ FILES 	=	ft_absi.c		ft_absll.c		ft_atoi.c		ft_atoll.c		\
 			ft_sqr_int.c			ft_sqr_ll.c				ft_sqr_szt.c	\
 			ft_strnewc.c			fprint_specifiers.c		fprint.c		\
 			ft_max_i.c				ft_min_i.c				count_words.c	\
-			ft_lstdel_fag.c			ft_atoi_base.c
+			ft_lstdel_fag.c			ft_atoi_base.c			ft_mini.c
 
 OBJECTS =	$(addprefix $(DIR_O)/,$(FILES:.c=.o))
 

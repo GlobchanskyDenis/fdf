@@ -64,4 +64,8 @@ void		set_minmax_z(t_fdf *s, int z);
 void		redraw(t_fdf *s);
 void		draw_line(t_pos a, t_pos b, int color, t_fdf *s);
 
+int			get_red(int z);
+int			get_green(int z);
+int			get_blue(int z);
+
 #endif

@@ -24,6 +24,27 @@ static void	logic(t_pos *a, t_pos *delta, t_pos *sign, int *error)
 	}
 }
 
+static int	get_gradient_color(t_pos a, t_pos b, t_pos current, t_fdf *s)
+{
+	double	persent;
+	int		red;
+	int		green;
+	int		blue;
+
+	if (!s)
+		free_exit(s, "get_gradient_color - empty pointer was found");
+	if (ft_absi(a.x - b.x) > ft_absi(a.y - b.y))
+		persent = ((double)current.x - (double)ft_mini(a.x, b.x)) / \
+			((double)ft_absi(a.z - b.z));
+	else
+		persent = ((double)current.y - (double)ft_mini(a.y, b.y)) / \
+			((double)ft_absi(a.z - b.z));
+	red = get_red((int)(persent * (double)ft_absi(a.z - b.z)));
+	green = get_green((int)(persent * (double)ft_absi(a.z - b.z)));
+	blue = get_blue((int)(persent * (double)ft_absi(a.z - b.z)));
+	return ((red << 16) | (green << 8) | blue);
+}
+
 void		draw_line(t_pos a, t_pos b, int color, t_fdf *s)
 {
 	t_pos	delta;
