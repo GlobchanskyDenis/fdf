@@ -75,7 +75,7 @@ void		redraw(t_fdf *s)
 	}
 }
 
-void		set_minmax_z(t_fdf *s, int z)
+void		set_minmax_z(t_fdf *s, float z)
 {
 	if (!s)
 		free_exit(s, "set_minmax_z - empty pointer found");

@@ -1,16 +1,25 @@
 #include "fdf.h"
 
-static int	get_point_color(t_fdf *s, int z)
+static int	get_point_color(t_fdf *s, float z)
 {
+	int		r;
+	int		g;
+	int		b;
+
 	if (!s)
 		free_exit(s, "get_point_color - null pointer found");
+	r = get_red(z, s);
+	g = get_green(z, s);
+	b = get_blue(z, s);
+	/*
 	if (z <= 0)
 		return (BLUE);
 	if (z < s->max_z / 3)
 		return (GREEN);
 	if (z < s->max_z * 2 / 3)
 		return (0xFFFF00);
-	return (RED);
+		*/
+	return ((r << 16) | (g << 8) | blue);
 }
 
 static void	set_point_color(t_fdf *s, t_pos *dst, t_pos *src)

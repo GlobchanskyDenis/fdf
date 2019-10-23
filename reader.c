@@ -47,6 +47,7 @@ t_pos	**make_bigger_pos_arr(t_pos **old_arr, t_pos *new_element)
 t_pos	make_pos(char *str, int x, int y, t_fdf *s)
 {
 	t_pos	pos;
+	int		int_z;
 	char	*tmp;
 
 	if (!str || !s)
@@ -54,9 +55,9 @@ t_pos	make_pos(char *str, int x, int y, t_fdf *s)
 	ft_bzero(&pos, sizeof(t_pos));
 	pos.x = x;
 	pos.y = y;
-	pos.z = ft_atoi(str);
-	set_minmax_z(s, pos.z);
-	if (!(tmp = ft_itoa(pos.z)))
+	int_z = ft_atoi(str);
+	set_minmax_z(s, int_z);
+	if (!(tmp = ft_itoa(int_z)))
 		fprint("mad itoa\n");
 	else
 	{
@@ -68,6 +69,7 @@ t_pos	make_pos(char *str, int x, int y, t_fdf *s)
 			free_exit(s, "bad string");
 		}
 		ft_strdel(&tmp);
+		pos.z = (float)int_z;
 	}
 	return (pos);
 }
