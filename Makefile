@@ -8,7 +8,7 @@ DIR		=	./
 SRC			=	$(DIR)main.c					$(DIR)free_exit.c	\
 				$(DIR)gnl.c						$(DIR)hooks.c		\
 				$(DIR)reader.c					$(DIR)grafix_start.c\
-				$(DIR)redraw.c
+				$(DIR)redraw.c					$(DIR)draw_line.c
 HEAD		= 	$(DIR)fdf.h
 MLX			= 	mlx/libmlx.a -lmlx -framework OpenGL -framework AppKit
 
@@ -35,7 +35,7 @@ fclean : clean
 			@rm -rf $(NAME).dSYM
 
 proj :
-			@./$(NAME) test_maps/mars.fdf
+			@./$(NAME) src.txt   # test_maps/mars.fdf
 
 all : 		$(NAME)
 

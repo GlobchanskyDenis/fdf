@@ -1,49 +1,45 @@
 #include "fdf.h"
 
-void	init_delta(t_pos *a, t_pos *b, t_pos *delta, t_fdf *s)
+static void	init_delta(t_pos *a, t_pos *b, t_pos *delta, t_fdf *s)
 {
 	if (!a || !b || !delta || !s)
-		return ;
-	a->hor = OFFSET_HOR + a->hor * s->win_size.hor / s->size.hor;
-	a->vert = OFFSET_VERT + a->vert * s->win_size.vert / s->size.vert;
-	b->hor = OFFSET_HOR + b->hor * s->win_size.hor / s->size.hor;
-	b->vert = OFFSET_VERT + b->vert * s->win_size.vert / s->size.vert;
-	delta->hor = (int)ft_absi(b->hor - a->hor);
-	delta->vert = (int)ft_absi(b->vert - a->vert);
+		free_exit(s, "drow_line - empty pointer was found");
+	delta->x = (int)ft_absi(b->x - a->x);
+	delta->y = (int)ft_absi(b->y - a->y);
 }
 
-void	logic(t_pos *a, t_pos *delta, t_pos *sign, int *error)
+static void	logic(t_pos *a, t_pos *delta, t_pos *sign, int *error)
 {
 	if (!a || !delta || !sign || !error)
 		return ;
-	if (error[1] > -delta->vert)
+	if (error[1] > -delta->y)
 	{
-		error[0] -= delta->vert;
-		a->hor += sign->hor;
+		error[0] -= delta->y;
+		a->x += sign->x;
 	}
-	if (error[1] < delta->hor)
+	if (error[1] < delta->x)
 	{
-		error[0] += delta->hor;
-		a->vert += sign->vert;
+		error[0] += delta->x;
+		a->y += sign->y;
 	}
 }
 
-void	draw_line(t_pos a, t_pos b, int color, t_fdf *s)
+void		draw_line(t_pos a, t_pos b, int color, t_fdf *s)
 {
 	t_pos	delta;
 	t_pos	sign;
 	int		error[2];
 
 	if (!s)
-		return ;
+		free_exit(s, "drow_line - empty pointer was found");
 	init_delta(&a, &b, &delta, s);
-	sign.hor = a.hor < b.hor ? 1 : -1;
-	sign.vert = a.vert < b.vert ? 1 : -1;
-	error[0] = delta.hor - delta.vert;
-	mlx_pixel_put(s->mlx, s->win, b.hor, b.vert, color);
-	while (a.hor != b.hor || a.vert != b.vert)
+	sign.x = a.x < b.x ? 1 : -1;
+	sign.y = a.y < b.y ? 1 : -1;
+	error[0] = delta.x - delta.y;
+	mlx_pixel_put(s->mlx, s->win, b.x, b.y, color);
+	while (a.x != b.x || a.y != b.y)
 	{
-		mlx_pixel_put(s->mlx, s->win, a.hor, a.vert, color);
+		mlx_pixel_put(s->mlx, s->win, a.x, a.y, color);
 		error[1] = error[0] * 2;
 		logic(&a, &delta, &sign, error);
 	}

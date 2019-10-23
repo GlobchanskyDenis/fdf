@@ -35,7 +35,7 @@ typedef struct	s_fdf
 	int		init_started;
 	int		arr_x_size;
 	int		arr_y_size;
-	int		temp_val;
+	int		scale;
 	int		camera_x;
 	int		camera_y;
 	int		max_z;
@@ -62,5 +62,6 @@ void		start_calc(t_fdf *s);
 void		set_minmax_z(t_fdf *s, int z);
 
 void		redraw(t_fdf *s);
+void		draw_line(t_pos a, t_pos b, int color, t_fdf *s);
 
 #endif

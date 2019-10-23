@@ -19,14 +19,15 @@ static void	set_point_color(t_fdf *s, t_pos *dst, t_pos *src)
 		free_exit(s, "set_point_color - null pointer found");
 	if (s->color_exists)
 	{
-		if ((*src).color)
-			(*dst).color = (*src).color;
+		if (src->color)
+			dst->color = src->color;
 		else
-			(*dst).color = WHITE;
+			dst->color = WHITE;
 	}
 	else
-		(*dst).color = get_point_color(s, (*src).z);
-	(*dst).z = (*src).z;
+		dst->color = get_point_color(s, src->z);
+	//fprint("set color %d\n", dst->color);
+	dst->z = src->z;
 }
 
 static void	make_cpy_arr(t_fdf *s)
@@ -49,7 +50,10 @@ static void	make_cpy_arr(t_fdf *s)
 		ft_bzero(s->cpy_arr[i], sizeof(t_pos) * s->arr_x_size);
 		j = -1;
 		while (++j < s->arr_x_size)
+		{
+			//fprint("x %d y %d ", j, i);
 			set_point_color(s, &(s->cpy_arr[i][j]), &(s->pos_arr[i][j]));
+		}
 	}
 }
 
@@ -57,9 +61,9 @@ void		start_calc(t_fdf *s)
 {
 	if (!s)
 		free_exit(s, "start_calc - empty pointer found");
-	s->temp_val = 100;
-	s->camera_x = 100;
-	s->camera_y = 100;
+	s->scale = 30;
+	s->camera_x = WIN_SIZE_HOR / 20 - 5;
+	s->camera_y = WIN_SIZE_VERT / 20 - 5;
 	s->is_need_to_redraw = 1;
 	make_cpy_arr(s);
 }

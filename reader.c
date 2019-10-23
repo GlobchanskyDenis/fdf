@@ -83,7 +83,7 @@ t_pos	*make_pos_arr(char **char_arr, int y, t_fdf *s)
 		free_exit(s, "make_pos_arr - malloc returned null");
 	i = -1;
 	while (char_arr[++i])
-		arr[i] = make_pos(char_arr[i], i + 1, y, s);
+		arr[i] = make_pos(char_arr[i], i + 1, y + 1, s);
 	return (arr);
 }
 

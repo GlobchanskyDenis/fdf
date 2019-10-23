@@ -35,9 +35,9 @@ int			mouse_hook(int param, int x, int y, t_fdf *s)
 	if (!s || (!param && !x && !y))
 		free_exit(s, "mouse_hook - empty pointer was found");
 	if (param == SCROLL_UP && (s->is_need_to_redraw = 1))
-		s->temp_val++;
+		s->scale++;
 	if (param == SCROLL_DOWN && (s->is_need_to_redraw = 1))
-		s->temp_val--;
+		s->scale--;
 	return (0);
 }
 
@@ -49,10 +49,10 @@ int			loop_hook(t_fdf *s)
 	{
 		mlx_clear_window(s->mlx, s->win);
 		redraw(s);
-		mlx_string_put(s->mlx, s->win, 30, 30, BLUE, "temp val = ");
+		mlx_string_put(s->mlx, s->win, 30, 30, BLUE, "scale    = ");
 		mlx_string_put(s->mlx, s->win, 30, 50, BLUE, "camera x = ");
 		mlx_string_put(s->mlx, s->win, 30, 70, BLUE, "camera y = ");
-		s->line = ft_itoa(s->temp_val);
+		s->line = ft_itoa(s->scale);
 		mlx_string_put(s->mlx, s->win, 140, 30, BLUE, s->line);
 		ft_strdel(&(s->line));
 		s->line = ft_itoa(s->camera_x);
