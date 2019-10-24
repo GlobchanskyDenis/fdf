@@ -18,6 +18,7 @@
 
 # include "libft/libft.h"
 # include "mlx/mlx.h"
+# include <math.h>
 
 typedef struct 	s_pos
 {
@@ -40,6 +41,7 @@ typedef struct	s_fdf
 	int		camera_y;
 	float	max_z;
 	float	min_z;
+	float	angle;
 	char	**arr;
 	t_pos	**pos_arr;
 	t_pos	**cpy_arr;
@@ -59,10 +61,11 @@ int			mouse_hook(int param, int x, int y, t_fdf *s);
 int			loop_hook(t_fdf *s);
 
 void		start_calc(t_fdf *s);
+int			get_point_color(float z, t_fdf *s);
 void		set_minmax_z(t_fdf *s, float z);
 
 void		redraw(t_fdf *s);
-void		draw_line(t_pos a, t_pos b, int color, t_fdf *s);
+void		draw_line(t_pos a, t_pos b, t_fdf *s);
 
 int			get_red(float z, t_fdf *s);
 int			get_green(float z, t_fdf *s);

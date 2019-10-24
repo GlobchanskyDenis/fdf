@@ -22,17 +22,26 @@ static t_fdf	*create_fdf_struct(char **av)
 		return (NULL);
 	ft_bzero(s, sizeof(t_fdf));
 	if ((s->fd = open(av[1], O_RDONLY)) < 3)
+		free_exit(s, "cannot open file");
+	/*
 	{
 		fprint("cannot open file\n");
 		free(s);
 		return (NULL);
 	}
+	*/
 	if (read(s->fd, &buf_ch, 0) < 0)
+	{
+		fprint("cannot take access to %s\n", av[1]);
+		free_exit(s, NULL);
+	}
+	/*
 	{
 		fprint("cannot take access to %s\n", av[1]);
 		free(s);
 		return (NULL);
 	}
+	*/
 	return (s);
 }
 
@@ -52,7 +61,7 @@ void			tmp_write_pos_arr(t_fdf *s, t_pos **arr)
 		j = 0;
 		while (j < s->arr_x_size)
 		{
-			fprint("%d %d %d\t", tab[j].x, tab[j].y, tab[j].z);
+			fprint("%d %d %d\t\t", tab[j].x, tab[j].y, (int)tab[j].z);
 			j++;
 		}
 		fprint("\n");
@@ -87,6 +96,7 @@ int				main(int ac, char **av)
 		free_exit(s, "create_fdf_struct returned null");
 	read_file(s);
 	//tmp_write_pos_arr(s, s->pos_arr);
+	fprint("arr x size %d\n arr y size %d\n", s->arr_x_size, s->arr_y_size);
 	loop(s);
 	free_exit(s, NULL);
 	return (0);

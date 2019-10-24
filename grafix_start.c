@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-static int	get_point_color(t_fdf *s, float z)
+int			get_point_color(float z, t_fdf *s)
 {
 	int		r;
 	int		g;
@@ -19,7 +19,7 @@ static int	get_point_color(t_fdf *s, float z)
 	if (z < s->max_z * 2 / 3)
 		return (0xFFFF00);
 		*/
-	return ((r << 16) | (g << 8) | blue);
+	return ((r << 16) | (g << 8) | b);
 }
 
 static void	set_point_color(t_fdf *s, t_pos *dst, t_pos *src)
@@ -34,7 +34,7 @@ static void	set_point_color(t_fdf *s, t_pos *dst, t_pos *src)
 			dst->color = WHITE;
 	}
 	else
-		dst->color = get_point_color(s, src->z);
+		dst->color = get_point_color(src->z, s);
 	//fprint("set color %d\n", dst->color);
 	dst->z = src->z;
 }
@@ -71,6 +71,7 @@ void		start_calc(t_fdf *s)
 	if (!s)
 		free_exit(s, "start_calc - empty pointer found");
 	s->scale = 30;
+	s->angle = 0.523599;
 	s->camera_x = WIN_SIZE_HOR / 20 - 5;
 	s->camera_y = WIN_SIZE_VERT / 20 - 5;
 	s->is_need_to_redraw = 1;

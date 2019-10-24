@@ -36,7 +36,7 @@ fclean : clean
 			@rm -rf $(NAME).dSYM
 
 proj :
-			@./$(NAME) src.txt   # test_maps/mars.fdf
+			@./$(NAME) src.txt   #test_maps/42.fdf #src.txt
 
 all : 		$(NAME)
 
