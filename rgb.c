@@ -8,7 +8,11 @@ int		get_red(float z, t_fdf *s)
 		free_exit(s, "get_red - empty pointer found");
 	if (z > 0 && z > s->max_z / 5)
 	{
-		persent = (z - s->max_z / 5) / (s->max_z * 4 / 5);
+		persent = (z - s->max_z / 5) / (s->max_z) + 0.2;
+		//persent = (z - s->max_z / 5) / (s->max_z * 4 / 5);
+		//persent = z / s->max_z;
+		//if (z > s->max_z)
+			//fprint("wrong max z\n");
 		return ((int)((float)255 * persent));
 	}
 	return (0);

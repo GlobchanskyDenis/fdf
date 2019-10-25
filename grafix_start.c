@@ -11,6 +11,14 @@ int			get_point_color(float z, t_fdf *s)
 	r = get_red(z, s);
 	g = get_green(z, s);
 	b = get_blue(z, s);
+	//if (r > 255)
+	//	fprint("red overflow\n");
+	//if (r < 255 && r > 245)
+	//	fprint("red is ok\n");
+	//if (g > 255)
+	//	fprint("green overflow\n");
+	//if (b > 255)
+	//	fprint("blue overflow\n");
 	/*
 	if (z <= 0)
 		return (BLUE);
@@ -72,8 +80,9 @@ void		start_calc(t_fdf *s)
 		free_exit(s, "start_calc - empty pointer found");
 	s->scale = 30;
 	s->angle = 0.523599;
-	s->camera_x = WIN_SIZE_HOR / 20 - 5;
-	s->camera_y = WIN_SIZE_VERT / 20 - 5;
+	s->z_scale = 0.1;
+	s->camera_x = 64;//WIN_SIZE_HOR / 20 - 5;
+	s->camera_y = 80;//WIN_SIZE_VERT / 20 - 5;
 	s->is_need_to_redraw = 1;
 	make_cpy_arr(s);
 }

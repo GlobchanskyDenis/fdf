@@ -15,6 +15,8 @@
 # define KEY_DOWN		125
 # define KEY_LEFT		123
 # define KEY_RIGHT		124
+# define KEY_PLUS		69
+# define KEY_MINUS		78
 
 # include "libft/libft.h"
 # include "mlx/mlx.h"
@@ -36,9 +38,10 @@ typedef struct	s_fdf
 	int		init_started;
 	int		arr_x_size;
 	int		arr_y_size;
-	int		scale;
 	int		camera_x;
 	int		camera_y;
+	double	z_scale;
+	double	scale;
 	float	max_z;
 	float	min_z;
 	float	angle;

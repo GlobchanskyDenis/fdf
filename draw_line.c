@@ -24,22 +24,29 @@ static void		logic(t_pos *a, t_pos *delta, t_pos *sign, int *error)
 	}
 }
 
-static float	found_z(t_pos a, t_pos b, t_pos current, t_fdf *s)
+static float	found_z(t_pos a, t_pos b, t_pos current, t_fdf *s, t_pos sign)
 {
 	float	persent;
 	float	z;
+	int		flag;
 
 	if (!s)
 		free_exit(s, "found_z - empty pointer was found");
-	if (ft_absi(a.x - b.x) >= ft_absi(a.y - b.y))
+	flag = ft_absi(a.x - b.x) >= ft_absi(a.y - b.y);
+	if (flag)
 		persent = ((float)(current.x - ft_mini(a.x, b.x))) / (float)(ft_absi(a.x - b.x));
 	else
 		persent = ((float)(current.y - ft_mini(a.y, b.y))) / (float)(ft_absi(a.y - b.y));
+	//fprint("persent %d\n", (int)(persent * 100));
 	persent = persent * ft_absf(b.z - a.z);
-	if (b.z >= a.z)
+	
+	sign.z = 0;
+	//if (a.z < b.z)
+	if ()
 		z = persent + a.z;
 	else
 		z = a.z - persent;
+		//z = persent + b.z;
 	return (z);
 }
 
@@ -53,14 +60,14 @@ void			draw_line(t_pos a, t_pos b, t_fdf *s)
 	if (!s)
 		free_exit(s, "drow_line - empty pointer was found");
 	current = a;
-	init_delta(&current, &b, &delta, s);
+	init_delta(&a, &b, &delta, s);
 	sign.x = a.x < b.x ? 1 : -1;
 	sign.y = a.y < b.y ? 1 : -1;
 	error[0] = delta.x - delta.y;
 	mlx_pixel_put(s->mlx, s->win, b.x, b.y, get_point_color(b.z, s));
 	while (current.x != b.x || current.y != b.y)
 	{
-		current.z = found_z(a, b, current, s);
+		current.z = found_z(a, b, current, s, sign);
 		mlx_pixel_put(s->mlx, s->win, current.x, current.y, get_point_color(current.z, s));
 		error[1] = error[0] * 2;
 		logic(&current, &delta, &sign, error);

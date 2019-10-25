@@ -20,13 +20,17 @@ int			key_hook(int key, t_fdf *s)
 	if (key == ESCAPE)
 		escape_function(s);
 	if (key == KEY_UP && (s->is_need_to_redraw = 1))
-		s->camera_y += 2;
-	if (key == KEY_DOWN && (s->is_need_to_redraw = 1))
 		s->camera_y -= 2;
+	if (key == KEY_DOWN && (s->is_need_to_redraw = 1))
+		s->camera_y += 2;
 	if (key == KEY_LEFT && (s->is_need_to_redraw = 1))
 		s->camera_x -= 2;
 	if (key == KEY_RIGHT && (s->is_need_to_redraw = 1))
 		s->camera_x += 2;
+	if (key == KEY_PLUS && (s->is_need_to_redraw = 1))
+		s->z_scale += 0.003;
+	if (key == KEY_MINUS && (s->is_need_to_redraw = 1))
+		s->z_scale -= 0.003;	
 	return (0);
 }
 
