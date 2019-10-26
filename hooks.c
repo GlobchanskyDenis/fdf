@@ -39,9 +39,9 @@ int			mouse_hook(int param, int x, int y, t_fdf *s)
 	if (!s || (!param && !x && !y))
 		free_exit(s, "mouse_hook - empty pointer was found");
 	if (param == SCROLL_UP && (s->is_need_to_redraw = 1))
-		s->scale = s->scale * 1001 / 1000 + 1;
+		s->scale = s->scale * 1.05;
 	if (param == SCROLL_DOWN && (s->is_need_to_redraw = 1))
-		s->scale = s->scale * 1000 / 1001 - 1;
+		s->scale = s->scale / 1.05;
 	return (0);
 }
 

@@ -1,5 +1,6 @@
 #include "fdf.h"
 
+
 int			get_point_color(float z, t_fdf *s)
 {
 	int		r;
@@ -19,16 +20,19 @@ int			get_point_color(float z, t_fdf *s)
 	//	fprint("green overflow\n");
 	//if (b > 255)
 	//	fprint("blue overflow\n");
-	/*
-	if (z <= 0)
-		return (BLUE);
-	if (z < s->max_z / 3)
-		return (GREEN);
-	if (z < s->max_z * 2 / 3)
-		return (0xFFFF00);
-		*/
+	
+	//if (z <= 0)
+	//	return (BLUE);
+	//if (z < s->max_z / 3)
+	//	return (GREEN);
+	//if (z < s->max_z * 2 / 3)
+	//	return (0xFFFF00);
+		
+
+
 	return ((r << 16) | (g << 8) | b);
 }
+
 
 static void	set_point_color(t_fdf *s, t_pos *dst, t_pos *src)
 {
@@ -67,10 +71,7 @@ static void	make_cpy_arr(t_fdf *s)
 		ft_bzero(s->cpy_arr[i], sizeof(t_pos) * s->arr_x_size);
 		j = -1;
 		while (++j < s->arr_x_size)
-		{
-			//fprint("x %d y %d ", j, i);
-			set_point_color(s, &(s->cpy_arr[i][j]), &(s->pos_arr[i][j]));
-		}
+		set_point_color(s, &(s->cpy_arr[i][j]), &(s->pos_arr[i][j]));
 	}
 }
 
@@ -78,11 +79,12 @@ void		start_calc(t_fdf *s)
 {
 	if (!s)
 		free_exit(s, "start_calc - empty pointer found");
-	s->scale = 30;
-	s->angle = 0.523599;
 	s->z_scale = 0.1;
-	s->camera_x = 64;//WIN_SIZE_HOR / 20 - 5;
-	s->camera_y = 80;//WIN_SIZE_VERT / 20 - 5;
+	//s->angle = 0.523599;
 	s->is_need_to_redraw = 1;
 	make_cpy_arr(s);
+	iso_convert_array(s);
+	s->scale = 100;
+	s->camera_x = 64;//WIN_SIZE_HOR / 20 - 5;
+	s->camera_y = 80;//WIN_SIZE_VERT / 20 - 5;
 }
