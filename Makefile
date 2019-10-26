@@ -21,7 +21,7 @@ SRC			=	main.c			free_exit.c		\
 				gnl.c			hooks.c			\
 				reader.c		grafix_start.c	\
 				redraw.c		draw_line.c		\
-				rgb.c			rotation.c
+				rgb.c
 
 OBJ			=	$(addprefix $(DIR_O)/,$(SRC:.c=.o))
 
@@ -57,7 +57,7 @@ fclean : clean
 			@rm -rf $(NAME).dSYM
 
 proj :
-			@./$(NAME) maps/t2.fdf #src.txt 	#test_maps/42.fdf  maps/t2.fdf  test_maps/42.fdf
+			@./$(NAME) test_maps/42.fdf #src.txt
 
 all : 		$(NAME)
 
