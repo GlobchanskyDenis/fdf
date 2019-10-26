@@ -1,42 +1,63 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: forange- <forange-@student.fr.42>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/10/26 13:58:12 by forange-          #+#    #+#              #
+#    Updated: 2019/10/26 15:12:34 by forange-         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME		= fdf
-FLAGS		= -Wall -Wextra -Werror -g 
+FLAGS		= -Wall -Wextra -Werror -g
 
 # directories
-DIR		=	./
+DIR_O		=	objects
 
 # files
-SRC			=	$(DIR)main.c					$(DIR)free_exit.c	\
-				$(DIR)gnl.c						$(DIR)hooks.c		\
-				$(DIR)reader.c					$(DIR)grafix_start.c\
-				$(DIR)redraw.c					$(DIR)draw_line.c	\
-				$(DIR)rgb.c
-HEAD		= 	$(DIR)fdf.h
-MLX			= 	mlx/libmlx.a -lmlx -framework OpenGL -framework AppKit
+SRC			=	main.c			free_exit.c		\
+				gnl.c			hooks.c			\
+				reader.c		grafix_start.c	\
+				redraw.c		draw_line.c		\
+				rgb.c			rotation.c
+
+OBJ			=	$(addprefix $(DIR_O)/,$(SRC:.c=.o))
+
+MLX			= 	-L./mlx -lmlx -framework OpenGL -framework AppKit
 
 # libraries
-L_FT 		= 	./libft/
-L_FT_A 		= 	$(L_FT)libft.a
+L_FT_D 		= 	./libft
+L_FT_L 		= 	$(L_FT_D)/libft.a
 
-$(NAME) :
-			@make -sC $(L_FT)
+.PHONY: all clean fclean re proj
+
+$(NAME) : $(OBJ)
+			@make -sC $(L_FT_D)
 			@echo "Compiling fdf"
-			@gcc $(FLAGS) $(SRC) $(L_FT_A) $(MLX) -o $(NAME)
-			@echo "file $(NAME) was created succesfully"
+			@gcc $(FLAGS) $(OBJ) $(L_FT_L) $(MLX) -o $(NAME)
+			@echo "File $(NAME) was created succesfully"
+
+$(DIR_O)/%.o: %.c fdf.h
+			@mkdir -p $(DIR_O)
+			@gcc $(FLAGS) -o $@ -c $<
 
 clean :
-			@echo "start cleaning"
-			@make clean -sC $(L_FT)
+			@echo "Start cleaning"
+			@make clean -sC $(L_FT_D)
 			@rm -rf .DS_Store
-			@rm -rf $(L_FT).DS_Store
-			@echo "cleaning finished"
+			@rm -rf $(L_FT_D)/.DS_Store
+			@rm -rf $(DIR_O)
+			@echo "Cleaning finished"
 
 fclean : clean
-			@rm -rf $(L_FT_A)
+			@rm -rf $(L_FT_L)
 			@rm -rf $(NAME)
 			@rm -rf $(NAME).dSYM
 
 proj :
-			@./$(NAME) test_maps/42.fdf #src.txt
+			@./$(NAME) maps/t2.fdf #src.txt 	#test_maps/42.fdf  maps/t2.fdf  test_maps/42.fdf
 
 all : 		$(NAME)
 

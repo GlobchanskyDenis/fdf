@@ -1,38 +1,26 @@
 #include "fdf.h"
 
-
-int			get_point_color(float z, t_fdf *s)
+static void	get_map_size_scale(t_fdf *s)
 {
-	int		r;
-	int		g;
-	int		b;
+	t_pos	size;
+	int		max_size;
 
 	if (!s)
-		free_exit(s, "get_point_color - null pointer found");
-	r = get_red(z, s);
-	g = get_green(z, s);
-	b = get_blue(z, s);
-	//if (r > 255)
-	//	fprint("red overflow\n");
-	//if (r < 255 && r > 245)
-	//	fprint("red is ok\n");
-	//if (g > 255)
-	//	fprint("green overflow\n");
-	//if (b > 255)
-	//	fprint("blue overflow\n");
-	
-	//if (z <= 0)
-	//	return (BLUE);
-	//if (z < s->max_z / 3)
-	//	return (GREEN);
-	//if (z < s->max_z * 2 / 3)
-	//	return (0xFFFF00);
-		
-
-
-	return ((r << 16) | (g << 8) | b);
+		free_exit(s, "get_map_size_scale - null pointer found");
+	size.x = ft_absi(s->max.x - s->min.x);
+	size.y = ft_absi(s->max.y - s->min.y);
+	if (size.x > size.y)
+		max_size = size.x;
+	else
+		max_size = size.y;
+	s->scale = (double)WIN_SIZE_VERT * 9 / (double)max_size;
+	iso_convert_array(s);
+	size.x = ft_absi(s->max.x - s->min.x);
+	size.y = ft_absi(s->max.y - s->min.y);
+	fprint("xmin %d xmax %d ymin %d ymax %d\n", s->min.x, s->max.x, s->min.y, s->max.y);
+	s->camera_x = (WIN_SIZE_HOR - size.x) / 2 - s->min.x;
+	s->camera_y = (WIN_SIZE_VERT - size.y)/ 2 - s->min.y;
 }
-
 
 static void	set_point_color(t_fdf *s, t_pos *dst, t_pos *src)
 {
@@ -47,7 +35,6 @@ static void	set_point_color(t_fdf *s, t_pos *dst, t_pos *src)
 	}
 	else
 		dst->color = get_point_color(src->z, s);
-	//fprint("set color %d\n", dst->color);
 	dst->z = src->z;
 }
 
@@ -82,9 +69,10 @@ void		start_calc(t_fdf *s)
 	s->z_scale = 0.1;
 	//s->angle = 0.523599;
 	s->is_need_to_redraw = 1;
+	s->camera_x = 0;
+	s->camera_y = 0;
+	s->scale = 10;
 	make_cpy_arr(s);
 	iso_convert_array(s);
-	s->scale = 100;
-	s->camera_x = 64;//WIN_SIZE_HOR / 20 - 5;
-	s->camera_y = 80;//WIN_SIZE_VERT / 20 - 5;
+	get_map_size_scale(s);
 }

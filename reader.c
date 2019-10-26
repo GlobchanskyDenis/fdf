@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-int		extract_color(char *str, t_fdf *s)
+static int		extract_color(char *str, t_fdf *s)
 {
 	int		color;
 
@@ -19,7 +19,7 @@ int		extract_color(char *str, t_fdf *s)
 	return (color);
 }
 
-t_pos	**make_bigger_pos_arr(t_pos **old_arr, t_pos *new_element)
+static t_pos	**make_bigger_pos_arr(t_pos **old_arr, t_pos *new_element)
 {
 	int		arr_len;
 	t_pos	**dst;
@@ -44,7 +44,7 @@ t_pos	**make_bigger_pos_arr(t_pos **old_arr, t_pos *new_element)
 	return (dst);
 }
 
-t_pos	make_pos(char *str, int x, int y, t_fdf *s)
+static t_pos	make_pos(char *str, int x, int y, t_fdf *s)
 {
 	t_pos	pos;
 	int		int_z;
@@ -61,8 +61,8 @@ t_pos	make_pos(char *str, int x, int y, t_fdf *s)
 		fprint("mad itoa\n");
 	else
 	{
-		if (strcmp(tmp, str) && ft_strchr(str, '.'))
-			pos.color = extract_color(ft_strchr(str, '.'), s);
+		if (strcmp(tmp, str) && ft_strchr(str, ','))
+			pos.color = extract_color(ft_strchr(str, ','), s);
 		else if (strcmp(tmp, str))
 		{
 			ft_strdel(&tmp);
@@ -74,7 +74,7 @@ t_pos	make_pos(char *str, int x, int y, t_fdf *s)
 	return (pos);
 }
 
-t_pos	*make_pos_arr(char **char_arr, int y, t_fdf *s)
+static t_pos	*make_pos_arr(char **char_arr, int y, t_fdf *s)
 {
 	t_pos	*arr;
 	int	i;
@@ -89,7 +89,7 @@ t_pos	*make_pos_arr(char **char_arr, int y, t_fdf *s)
 	return (arr);
 }
 
-void	read_file(t_fdf *s)
+void			read_file(t_fdf *s)
 {
 	if (!s)
 		return ;

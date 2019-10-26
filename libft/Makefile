@@ -6,13 +6,13 @@
 #    By: forange- <forange-@student.fr.42>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 16:00:22 by bsabre-c          #+#    #+#              #
-#    Updated: 2019/10/06 17:34:11 by bsabre-c         ###   ########.fr        #
+#    Updated: 2019/10/26 14:24:08 by forange-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME	=	libft.a
-FLAGS 	=	-g -Wall -Wextra -Werror -c
+FLAGS 	=	-g -Wall -Wextra -Werror
 DIR_O 	=	objects
 
 FILES 	=	ft_absi.c		ft_absll.c		ft_atoi.c		ft_atoll.c		\
@@ -42,15 +42,15 @@ FILES 	=	ft_absi.c		ft_absll.c		ft_atoi.c		ft_atoll.c		\
 
 OBJECTS =	$(addprefix $(DIR_O)/,$(FILES:.c=.o))
 
-OBJ		=	$(FILES:.c=.o)
-
-$(NAME) :
+$(NAME) : $(OBJECTS)
 			@echo "Compiling libft files"
-			@mkdir $(DIR_O)
-			@gcc $(FLAGS) $(FILES) && mv $(OBJ) $(DIR_O)
 			@ar rc $(NAME) $(OBJECTS)
 			@ranlib $(NAME)
 			@echo "Done"
+
+$(DIR_O)/%.o : %.c libft.h
+			@mkdir -p $(DIR_O)
+			@gcc $(FLAGS) -o $@ -c $<
 
 clean :
 			@echo "remove libft object files and some trash"
@@ -62,9 +62,6 @@ clean :
 fclean : clean
 			@echo "remove $(NAME)"
 			@rm -f $(NAME)
-
-%.o: %.c $(HEAD)
-		    @gcc $(FLAGS) -c -o $@ $<
 
 .PHONY: all, clean, fclean, re
 
