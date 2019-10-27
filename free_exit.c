@@ -43,9 +43,9 @@ void	free_exit(t_fdf *s, char *message)
 		if (s->line)
 			ft_strdel(&(s->line));
 		if (s->win)
-			;
+			s->win = NULL;
 		if (s->mlx)
-			;
+			s->mlx = NULL;
 		free(s);
 	}
 	if (message)
