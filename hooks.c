@@ -32,9 +32,11 @@ int			key_hook(int key, t_fdf *s)
 	if (key == KEY_MINUS && (s->is_need_to_redraw = 1))
 		s->z_scale -= 0.003;
 	if (key == KEY_X && (s->is_need_to_redraw = 1))
-		s->x_ang += 0.1;//(s->x_angle + 0.1 < 3) ? s->x_angle + 0.1 : -1; 
+		s->angle.x = 0.1; 
 	if (key == KEY_Y && (s->is_need_to_redraw = 1))
-		s->y_ang += 0.1;
+		s->angle.y = 0.1;
+	if (key == KEY_Z && (s->is_need_to_redraw = 1))
+		s->angle.z = 0.1;
 	return (0);
 }
 

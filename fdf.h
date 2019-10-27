@@ -54,11 +54,9 @@ typedef struct	s_fdf
 	int		shift_y;
 	double	z_scale;
 	double	scale;
-	double	x_ang;
-	double	y_ang;
-	double	z_ang;
 	t_pos	**pos;
 	t_posi	**cpy;
+	t_pos	angle;
 	t_pos	min;
 	t_pos	max;
 	void	*mlx;
@@ -88,7 +86,7 @@ void		redraw(t_fdf *s);					//	redraw.c
 
 int			get_point_color(double z, t_fdf *s); /// rgb.c
 
-void		x_rotation(int i, int j, t_fdf *s);
+void		rotation(int i, int j, t_fdf *s);
 
 //int			get_red(float z, t_fdf *s);
 //int			get_green(float z, t_fdf *s);

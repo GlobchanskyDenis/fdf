@@ -2,33 +2,57 @@
 /*
 void	y_rotation(int i, int j, t_fdf *s)
 {
-	t_pos	**arr;
+	t_pos	*dot;
 	t_pos	old;
 
 	if (!s)
-		free_exit(s, "x_rotation - null pointer found\n");
-	if (!(arr = s->cpy_arr))
-		free_exit(s, "x_rotation - null pointer returned\n");
-	old.x = arr[i][j].x - s->camera_x;
-	old.z = arr[i][j].z;
-	//fprint("was %d %d\t\t", arr[i][j].y, (int)arr[i][j].z);
-	arr[i][j].x = s->camera_x + (int)(((double)old.x) * cos(s->y_angle) + old.z * sin(s->y_angle));
-	arr[i][j].z = (float)((-(double)old.x) * sin(s->y_angle) + old.z * sin(s->y_angle));
-	//fprint("become %d %d\n", arr[i][j].y, (int)arr[i][j].z);
+		free_exit(s, "z_rotation - null pointer found\n");
+	if (!(dot = &(s->pos[i][j])))
+		free_exit(s, "z_rotation - null pointer returned\n");
+	old = *dot;
+	dot->y = old.y * cos(s->angle.z) + old.x * sin(s->angle.z);
+	dot->x = old.x * cos(s->angle.z) - old.y * sin(s->angle.z);
 }
-*/
-void	x_rotation(int i, int j, t_fdf *s)
+
+void	y_rotation(int i, int j, t_fdf *s)
 {
 	t_pos	*dot;
 	t_pos	old;
 
 	if (!s)
-		free_exit(s, "x_rotation - null pointer found\n");
+		free_exit(s, "y_rotation - null pointer found\n");
 	if (!(dot = &(s->pos[i][j])))
-		free_exit(s, "x_rotation - null pointer returned\n");
+		free_exit(s, "y_rotation - null pointer returned\n");
 	old = *dot;
-	//fprint("was %d %d\t\t", arr[i][j].y, (int)arr[i][j].z);
-	dot->y = old.y * cos(s->x_ang) + old.z * sin(s->x_ang);
-	dot->z = old.z * cos(s->x_ang) - old.y * sin(s->x_ang);
-	//fprint("become %d %d\n", arr[i][j].y, (int)arr[i][j].z);
+	dot->x = old.x * cos(s->angle.y) + old.z * sin(s->angle.y);
+	dot->z = old.z * cos(s->angle.y) - old.x * sin(s->angle.y);
+}
+*/
+void	rotation(int i, int j, t_fdf *s)
+{
+	t_pos	*dot;
+	t_pos	old;
+
+	if (!s)
+		free_exit(s, "rotation - null pointer found\n");
+	if (!(dot = &(s->pos[i][j])))
+		free_exit(s, "rotation - null pointer returned\n");
+	if (s->angle.x != 0)
+	{
+		old = *dot;
+		dot->y = old.y * cos(s->angle.x) + old.z * sin(s->angle.x);
+		dot->z = old.z * cos(s->angle.x) - old.y * sin(s->angle.x);
+	}
+	if (s->angle.y != 0)
+	{
+		old = *dot;
+		dot->x = old.x * cos(s->angle.y) + old.z * sin(s->angle.y);
+		dot->z = old.z * cos(s->angle.y) - old.x * sin(s->angle.y);
+	}
+	if (s->angle.z != 0)
+	{
+		old = *dot;
+		dot->y = old.y * cos(s->angle.z) + old.x * sin(s->angle.z);
+		dot->x = old.x * cos(s->angle.z) - old.y * sin(s->angle.z);
+	}
 }
