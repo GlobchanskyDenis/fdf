@@ -17,11 +17,10 @@ FLAGS		= -Wall -Wextra -Werror -g
 DIR_O		=	objects
 
 # files
-SRC			=	main.c			free_exit.c		\
-				gnl.c			hooks.c			\
-				reader.c		grafix_start.c	\
-				redraw.c		draw_line.c		\
-				rgb.c
+SRC			=	main.c			free_exit.c			minmax.c		\
+				gnl.c			reader.c			grafix_start.c	\
+				rgb.c			redraw.c			hooks.c			\
+				draw_line.c		rotation.c
 
 OBJ			=	$(addprefix $(DIR_O)/,$(SRC:.c=.o))
 

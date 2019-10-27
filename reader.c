@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reader.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsabre-c <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/27 16:32:27 by bsabre-c          #+#    #+#             */
+/*   Updated: 2019/10/27 16:35:14 by bsabre-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static int		extract_color(char *str, t_fdf *s)
@@ -19,96 +31,101 @@ static int		extract_color(char *str, t_fdf *s)
 	return (color);
 }
 
-static t_pos	**make_bigger_pos_arr(t_pos **old_arr, t_pos *new_element)
-{
-	int		arr_len;
-	t_pos	**dst;
-
-	if (!old_arr || !new_element)
-	{
-		delete_pos_arr(&old_arr);
-		if (new_element)
-			free(new_element);
-		return (NULL);
-	}
-	arr_len = 0;
-	while (old_arr[arr_len])
-		arr_len++;
-	if (!(dst = (t_pos **)malloc(sizeof(t_pos *) * (arr_len + 2))))
-		return (NULL);
-	dst[arr_len] = new_element;
-	dst[arr_len + 1] = NULL;
-	while (--arr_len >= 0)
-		dst[arr_len] = old_arr[arr_len];
-	free(old_arr);
-	return (dst);
-}
-
 static t_pos	make_pos(char *str, int x, int y, t_fdf *s)
 {
 	t_pos	pos;
 	int		int_z;
-	char	*tmp;
 
 	if (!str || !s)
 		free_exit(s, "make_pos - null pointer found");
 	ft_bzero(&pos, sizeof(t_pos));
-	pos.x = x;
-	pos.y = y;
+	pos.x = (double)x - ((double)s->arr_x_size - 1) / 2;
+	pos.y = (double)y - ((double)s->arr_y_size - 1) / 2;
 	int_z = ft_atoi(str);
-	set_minmax_z(s, int_z);
-	if (!(tmp = ft_itoa(int_z)))
+	if (!(s->line = ft_itoa(int_z)))
 		fprint("mad itoa\n");
 	else
 	{
-		if (strcmp(tmp, str) && ft_strchr(str, ','))
+		if (ft_strchr(str, ','))
 			pos.color = extract_color(ft_strchr(str, ','), s);
-		else if (strcmp(tmp, str))
-		{
-			ft_strdel(&tmp);
+		else if (strcmp(s->line, str))
 			free_exit(s, "bad string");
-		}
-		ft_strdel(&tmp);
-		pos.z = (float)int_z;
+		ft_strdel(&(s->line));
+		pos.z = (double)int_z;
 	}
+	set_minmax_xy(pos, s);
+	set_minmax_z(pos.z, s);
 	return (pos);
 }
 
-static t_pos	*make_pos_arr(char **char_arr, int y, t_fdf *s)
+static t_pos	*make_pos_arr(char *str, int i, t_fdf *s)
 {
-	t_pos	*arr;
-	int	i;
+	t_pos	*dst;
+	char	**char_arr;
+	int		j;
 
-	if (!char_arr || !s)
-		free_exit(s, "read file - null pointer returned");
-	if (!(arr = (t_pos *)malloc(sizeof(t_pos) * s->arr_x_size)))
-		free_exit(s, "make_pos_arr - malloc returned null");
+	if (!str || !s)
+		free_exit(s, "make_pos_arr - null pointer found");
+	if (!(dst = (t_pos *)malloc(sizeof(t_pos) * s->arr_x_size)))
+		free_exit(s, "make_pos_2arr - malloc returned null");
+	ft_bzero(dst, sizeof(t_pos) * s->arr_x_size);
+	if (!(char_arr = ft_strsplit(str, ' ')))
+	{
+		delete_arr(&char_arr);
+		free_exit(s, "make_pos_2arr - cannot split char string");
+	}
+	j = -1;
+	while (++j < s->arr_x_size)
+		dst[j] = make_pos(char_arr[j], j, i, s);
+	delete_arr(&char_arr);
+	return (dst);
+}
+
+static t_pos	**make_pos_2arr(t_list *lst, t_fdf *s)
+{
+	t_pos	**dst;
+	int		i;
+
+	if (!lst || !s)
+		free_exit(s, "make_pos_2arr - null pointer returned");
+	if (!(dst = (t_pos **)malloc(sizeof(t_pos *) * (s->arr_y_size + 1))))
+		free_exit(s, "make_pos_2arr - malloc returned null");
+	ft_bzero(dst, sizeof(t_pos *) * (s->arr_y_size + 1));
 	i = -1;
-	while (char_arr[++i])
-		arr[i] = make_pos(char_arr[i], i + 1, y + 1, s);
-	return (arr);
+	while (++i < s->arr_y_size)
+	{
+		if (!lst)
+			free_exit(s, "make_pos_2arr - null node found");
+		if (!(dst[i] = make_pos_arr(lst->content, i, s)))
+			free_exit(s, "make_pos_2arr - malloc returned null");
+		lst = lst->next;
+	}
+	dst[i] = NULL;
+	return (dst);
 }
 
 void			read_file(t_fdf *s)
 {
+	t_list	*lst;
+	char	*line;
+
 	if (!s)
-		return ;
-	if (!(s->pos_arr = (t_pos **)malloc(sizeof(t_pos *))))
-		free_exit(s, "read file - malloc returned null");
-	ft_bzero(s->pos_arr, sizeof(t_pos));
-	while(gnl(s->fd, &(s->line)))
+		free_exit(s, "read_file - empty pointer found");
+	if (!(lst = ft_lstnew_fag(NULL, 0)))
+		free_exit(s, "read_file - cannot create node");
+	s->lst = lst;
+	while (gnl(s->fd, &line) > 0)
 	{
-		if (!(s->arr = ft_strsplit(s->line, ' ')))
-			free_exit(s, "read file - null pointer returned");
 		if (s->arr_x_size == 0)
-			s->arr_x_size = (int)count_words(s->arr);
-		if (s->arr_x_size != (int)count_words(s->arr))
-			free_exit(s, "source lines have different length");
-		if (!(s->pos_arr = make_bigger_pos_arr(s->pos_arr, 
-				make_pos_arr(s->arr, s->arr_y_size, s))))
-			free_exit(s, "read file - null pointer in position returned");
-		delete_arr(&(s->arr));
-		ft_strdel(&(s->line));
+			s->arr_x_size = (int)ft_countwords(line, ' ');
+		else if (s->arr_x_size != (int)ft_countwords(line, ' '))
+			free_exit(s, "read_file - source lines have different length");
+		lst->content = line;
+		if (!(lst->next = ft_lstnew_fag(NULL, 0)))
+			free_exit(s, "read_file - cannot create node");
+		lst = lst->next;
 		s->arr_y_size++;
 	}
+	if (!(s->pos = make_pos_2arr(s->lst, s)))
+		free_exit(s, "read_file - cannot create pos_arr");
 }

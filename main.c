@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsabre-c <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/27 16:33:04 by bsabre-c          #+#    #+#             */
+/*   Updated: 2019/10/27 16:33:06 by bsabre-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static int		wrong_params(int ac, char **av)
@@ -23,28 +35,13 @@ static t_fdf	*create_fdf_struct(char **av)
 	ft_bzero(s, sizeof(t_fdf));
 	if ((s->fd = open(av[1], O_RDONLY)) < 3)
 		free_exit(s, "cannot open file");
-	/*
-	{
-		fprint("cannot open file\n");
-		free(s);
-		return (NULL);
-	}
-	*/
 	if (read(s->fd, &buf_ch, 0) < 0)
 	{
 		fprint("cannot take access to %s\n", av[1]);
 		free_exit(s, NULL);
 	}
-	/*
-	{
-		fprint("cannot take access to %s\n", av[1]);
-		free(s);
-		return (NULL);
-	}
-	*/
 	return (s);
 }
-
 
 void			tmp_write_pos_arr(t_fdf *s, t_pos **arr)
 {
@@ -55,13 +52,14 @@ void			tmp_write_pos_arr(t_fdf *s, t_pos **arr)
 	if (!s)
 		return ;
 	i = 0;
-	while (arr[i])
+	while (i < s->arr_y_size)
 	{
 		tab = arr[i];
 		j = 0;
 		while (j < s->arr_x_size)
 		{
-			fprint("%d %d %d\t\t", tab[j].x, tab[j].y, (int)tab[j].z);
+			fprint("%d %d\t%d\t", (int)(tab[j].x * 10),
+				(int)(tab[j].y * 10), (int)tab[j].z);
 			j++;
 		}
 		fprint("\n");
@@ -69,16 +67,13 @@ void			tmp_write_pos_arr(t_fdf *s, t_pos **arr)
 	}
 }
 
-
-void			loop(t_fdf *s)
+static void		loop(t_fdf *s)
 {
 	if (!s)
 		free_exit(s, "loop - null pointer found");
-	fprint("=== grafix start ===\n");
 	start_calc(s);
-	//tmp_write_pos_arr(s, s->cpy_arr);
-	//create_images();
-	if (!(s->mlx = mlx_init()) || !(s->win = mlx_new_window(s->mlx, WIN_SIZE_HOR, WIN_SIZE_VERT, "fdf by bsabre-c")))
+	if (!(s->mlx = mlx_init()) || \
+		!(s->win = mlx_new_window(s->mlx, WIN_SIZE_HOR, WIN_SIZE_VERT, "fdf by bsabre-c")))
 		free_exit(s, "loop - error in opening window");
 	mlx_loop_hook(s->mlx, loop_hook, s);
 	mlx_key_hook(s->win, key_hook, s);
@@ -95,8 +90,12 @@ int				main(int ac, char **av)
 	if (!(s = create_fdf_struct(av)))
 		free_exit(s, "create_fdf_struct returned null");
 	read_file(s);
-	//tmp_write_pos_arr(s, s->pos_arr);
-	fprint("arr x size %d\n arr y size %d\n", s->arr_x_size, s->arr_y_size);
+	//tmp_write_pos_arr(s, s->pos);
+	//fprint("arr x_size %d y_size %d\n", s->arr_x_size, s->arr_y_size);
+	//fprint("min xyz\t%d\t%d\t%d\n", (int)s->min.x, (int)s->min.y, \
+	//	(int)s->min.z);
+	//fprint("max xyz\t%d\t%d\t%d\n", (int)s->max.x, (int)s->max.y, \
+	//	(int)s->max.z);
 	loop(s);
 	free_exit(s, NULL);
 	return (0);

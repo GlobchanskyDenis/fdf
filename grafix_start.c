@@ -1,28 +1,20 @@
 #include "fdf.h"
 
-static void	get_map_size_scale(t_fdf *s)
+static void	get_scale(t_fdf *s)
 {
 	t_pos	size;
-	int		max_size;
 
 	if (!s)
 		free_exit(s, "get_map_size_scale - null pointer found");
-	size.x = ft_absi(s->max.x - s->min.x);
-	size.y = ft_absi(s->max.y - s->min.y);
+	size.x = ft_absd(s->max.x - s->min.x);
+	size.y = ft_absd(s->max.y - s->min.y);
 	if (size.x > size.y)
-		max_size = size.x;
+		s->scale = (double)WIN_SIZE_HOR / 2 / size.x;
 	else
-		max_size = size.y;
-	s->scale = (double)WIN_SIZE_VERT * 9 / (double)max_size;
-	iso_convert_array(s);
-	size.x = ft_absi(s->max.x - s->min.x);
-	size.y = ft_absi(s->max.y - s->min.y);
-	fprint("xmin %d xmax %d ymin %d ymax %d\n", s->min.x, s->max.x, s->min.y, s->max.y);
-	s->camera_x = (WIN_SIZE_HOR - size.x) / 2 - s->min.x;
-	s->camera_y = (WIN_SIZE_VERT - size.y)/ 2 - s->min.y;
+		s->scale = (double)WIN_SIZE_VERT / 2 / size.y;
 }
 
-static void	set_point_color(t_fdf *s, t_pos *dst, t_pos *src)
+static void	set_point_color(t_fdf *s, t_posi *dst, t_pos *src)
 {
 	if (!s || !dst || !src)
 		free_exit(s, "set_point_color - null pointer found");
@@ -35,7 +27,7 @@ static void	set_point_color(t_fdf *s, t_pos *dst, t_pos *src)
 	}
 	else
 		dst->color = get_point_color(src->z, s);
-	dst->z = src->z;
+	//dst->z = src->z;
 }
 
 static void	make_cpy_arr(t_fdf *s)
@@ -45,34 +37,32 @@ static void	make_cpy_arr(t_fdf *s)
 
 	if (!s)
 		free_exit(s, "make_cpy_arr - empty pointer found");
-	if (!(s->cpy_arr = (t_pos **)malloc(sizeof(t_pos *) * (s->arr_y_size + 1))))
+	if (!(s->cpy = (t_posi **)malloc(sizeof(t_posi *) * (s->arr_y_size + 1))))
 		free_exit(s, "start_calc - malloc error");
-	ft_bzero(s->cpy_arr, sizeof(t_pos *) * (s->arr_y_size + 1));
-	if (s->cpy_arr[s->arr_y_size])
-		fprint("bzero error\n");
+	ft_bzero(s->cpy, sizeof(t_posi *) * (s->arr_y_size + 1));
 	i = -1;
 	while(++i < s->arr_y_size)
 	{
-		if (!(s->cpy_arr[i] = (t_pos *)malloc(sizeof(t_pos) * s->arr_x_size)))
+		if (!(s->cpy[i] = (t_posi *)malloc(sizeof(t_posi) * s->arr_x_size)))
 			free_exit(s, "start_calc - malloc error");
-		ft_bzero(s->cpy_arr[i], sizeof(t_pos) * s->arr_x_size);
+		ft_bzero(s->cpy[i], sizeof(t_posi) * s->arr_x_size);
 		j = -1;
 		while (++j < s->arr_x_size)
-		set_point_color(s, &(s->cpy_arr[i][j]), &(s->pos_arr[i][j]));
+		set_point_color(s, &(s->cpy[i][j]), &(s->pos[i][j]));
 	}
+	s->cpy[i] = NULL;
 }
 
 void		start_calc(t_fdf *s)
 {
 	if (!s)
 		free_exit(s, "start_calc - empty pointer found");
-	s->z_scale = 0.1;
+	s->z_scale = 0.3;
 	//s->angle = 0.523599;
 	s->is_need_to_redraw = 1;
-	s->camera_x = 0;
-	s->camera_y = 0;
-	s->scale = 10;
+	s->shift_x = WIN_SIZE_HOR / 2;
+	s->shift_y = WIN_SIZE_VERT / 2;
 	make_cpy_arr(s);
-	iso_convert_array(s);
-	get_map_size_scale(s);
+	//iso_convert_array(s);
+	get_scale(s);
 }

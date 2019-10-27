@@ -15,7 +15,7 @@ static double	percent(int start, int end, int current)
     return ((distance == 0) ? 1.0 : (placement / distance));
 }
 
-static int		get_color(t_pos current, t_pos start, t_pos end, t_pos delta)
+static int		get_color(t_posi current, t_posi start, t_posi end, t_posi delta)
 {
     int     red;
     int     green;
@@ -34,7 +34,7 @@ static int		get_color(t_pos current, t_pos start, t_pos end, t_pos delta)
     return ((red << 16) | (green << 8) | blue);
 }
 
-static void		logic(t_pos *a, t_pos *delta, t_pos *sign, int *error)
+static void		logic(t_posi *a, t_posi *delta, t_posi *sign, int *error)
 {
 	if (!a || !delta || !sign || !error)
 		return ;
@@ -50,11 +50,11 @@ static void		logic(t_pos *a, t_pos *delta, t_pos *sign, int *error)
 	}
 }
 
-void			draw_line(t_pos a, t_pos b, t_fdf *s)
+void			draw_line(t_posi a, t_posi b, t_fdf *s)
 {
-	t_pos	delta;
-	t_pos	sign;
-	t_pos	current;
+	t_posi	delta;
+	t_posi	sign;
+	t_posi	current;
 	int		error[2];
 
 	if (!s)
@@ -65,10 +65,12 @@ void			draw_line(t_pos a, t_pos b, t_fdf *s)
 	sign.x = a.x < b.x ? 1 : -1;
 	sign.y = a.y < b.y ? 1 : -1;
 	error[0] = delta.x - delta.y;
-	mlx_pixel_put(s->mlx, s->win, b.x, b.y, get_color(current, a, b, delta));
+	mlx_pixel_put(s->mlx, s->win, b.x + s->shift_x, \
+		b.y + s->shift_y, get_color(current, a, b, delta));
 	while (current.x != b.x || current.y != b.y)
 	{
-		mlx_pixel_put(s->mlx, s->win, current.x, current.y, get_color(current, a, b, delta));
+		mlx_pixel_put(s->mlx, s->win, current.x + s->shift_x, \
+			current.y + s->shift_y, get_color(current, a, b, delta));
 		error[1] = error[0] * 2;
 		logic(&current, &delta, &sign, error);
 	}

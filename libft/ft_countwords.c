@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_min_i.c                                         :+:      :+:    :+:   */
+/*   ft_countwords.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsabre-c <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/08 19:09:22 by bsabre-c          #+#    #+#             */
-/*   Updated: 2019/09/08 19:10:21 by bsabre-c         ###   ########.fr       */
+/*   Created: 2019/10/27 13:01:41 by bsabre-c          #+#    #+#             */
+/*   Updated: 2019/10/27 13:04:16 by bsabre-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_min_i(int n1, int n2)
+size_t	ft_countwords(char *str, char sep)
 {
-	if (n1 < n2)
-		return (n1);
-	else
-		return (n2);
+	size_t result;
+	size_t i;
+
+	i = 0;
+	result = 0;
+	while (str[i] && str[i] == sep)
+		i++;
+	while (str[i])
+	{
+		while (str[i] && str[i] != sep)
+			i++;
+		result++;
+		while (str[i] && str[i] == sep)
+			i++;
+	}
+	return (result);
 }

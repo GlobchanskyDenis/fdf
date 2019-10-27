@@ -6,7 +6,7 @@
 #    By: forange- <forange-@student.fr.42>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 16:00:22 by bsabre-c          #+#    #+#              #
-#    Updated: 2019/10/26 14:24:08 by forange-         ###   ########.fr        #
+#    Updated: 2019/10/27 13:05:07 by bsabre-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME	=	libft.a
 FLAGS 	=	-g -Wall -Wextra -Werror
 DIR_O 	=	objects
 
-FILES 	=	ft_absi.c		ft_absll.c		ft_atoi.c		ft_atoll.c		\
+FILES 	=	ft_atoi.c		ft_atoll.c		ft_countwords.c	\
 			ft_bzero.c		ft_isalnum.c	ft_isalpha.c	ft_isascii.c	\
 			ft_isdigit.c	ft_isprint.c	ft_itoa.c		ft_lltoa.c		\
 			ft_lstadd.c		ft_lstdel.c		ft_lstdelone.c	ft_lstiter.c	\
@@ -36,9 +36,11 @@ FILES 	=	ft_absi.c		ft_absll.c		ft_atoi.c		ft_atoll.c		\
 			ft_ulltoa_base.c		ft_putchar_fd_smpl.c	ft_lltoa_base.c	\
 			ft_sqr_int.c			ft_sqr_ll.c				ft_sqr_szt.c	\
 			ft_strnewc.c			fprint_specifiers.c		fprint.c		\
-			ft_max_i.c				ft_min_i.c				count_words.c	\
-			ft_lstdel_fag.c			ft_atoi_base.c			ft_mini.c		\
-			ft_absf.c				ft_minf.c
+			count_words.c			ft_lstdel_fag.c			ft_atoi_base.c	\
+			ft_mini.c				ft_maxi.c				ft_minf.c		\
+			ft_maxf.c				ft_mind.c				ft_maxd.c		\
+			ft_minll.c				ft_maxll.c				ft_absi.c		\
+			ft_absf.c				ft_absd.c				ft_absll.c
 
 OBJECTS =	$(addprefix $(DIR_O)/,$(FILES:.c=.o))
 

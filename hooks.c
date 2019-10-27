@@ -20,21 +20,21 @@ int			key_hook(int key, t_fdf *s)
 	if (key == ESCAPE)
 		escape_function(s);
 	if (key == KEY_UP && (s->is_need_to_redraw = 1))
-		s->camera_y -= 15;
+		s->shift_y -= 15;
 	if (key == KEY_DOWN && (s->is_need_to_redraw = 1))
-		s->camera_y += 15;
+		s->shift_y += 15;
 	if (key == KEY_LEFT && (s->is_need_to_redraw = 1))
-		s->camera_x -= 15;
+		s->shift_x -= 15;
 	if (key == KEY_RIGHT && (s->is_need_to_redraw = 1))
-		s->camera_x += 15;
+		s->shift_x += 15;
 	if (key == KEY_PLUS && (s->is_need_to_redraw = 1))
 		s->z_scale += 0.003;
 	if (key == KEY_MINUS && (s->is_need_to_redraw = 1))
 		s->z_scale -= 0.003;
 	if (key == KEY_X && (s->is_need_to_redraw = 1))
-		s->x_angle += 0.1;//(s->x_angle + 0.1 < 3) ? s->x_angle + 0.1 : -1; 
+		s->x_ang += 0.1;//(s->x_angle + 0.1 < 3) ? s->x_angle + 0.1 : -1; 
 	if (key == KEY_Y && (s->is_need_to_redraw = 1))
-		s->y_angle += 0.1;
+		s->y_ang += 0.1;
 	return (0);
 }
 
@@ -63,10 +63,10 @@ int			loop_hook(t_fdf *s)
 		s->line = ft_itoa(s->scale);
 		mlx_string_put(s->mlx, s->win, 140, 30, WHITE, s->line);
 		ft_strdel(&(s->line));
-		s->line = ft_itoa(s->camera_x);
+		s->line = ft_itoa(s->shift_x);
 		mlx_string_put(s->mlx, s->win, 140, 50, WHITE, s->line);
 		ft_strdel(&(s->line));
-		s->line = ft_itoa(s->camera_y);
+		s->line = ft_itoa(s->shift_y);
 		mlx_string_put(s->mlx, s->win, 140, 70, WHITE, s->line);
 		ft_strdel(&(s->line));
 		s->is_need_to_redraw = 0;

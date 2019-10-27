@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_absi.c                                          :+:      :+:    :+:   */
+/*   ft_maxd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsabre-c <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/11 14:25:11 by bsabre-c          #+#    #+#             */
-/*   Updated: 2019/10/27 12:30:15 by bsabre-c         ###   ########.fr       */
+/*   Created: 2019/10/27 12:17:08 by bsabre-c          #+#    #+#             */
+/*   Updated: 2019/10/27 12:19:02 by bsabre-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_absi(int nbr)
+double	ft_maxd(double a, double b)
 {
-	if (nbr < 0)
-		return (-nbr);
+	if (a > b)
+		return (a);
 	else
-		return (nbr);
+		return (b);
 }

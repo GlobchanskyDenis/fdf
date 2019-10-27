@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:34:29 by bsabre-c          #+#    #+#             */
-/*   Updated: 2019/09/23 12:06:57 by bsabre-c         ###   ########.fr       */
+/*   Updated: 2019/10/27 13:07:24 by bsabre-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
-unsigned int		ft_absi(int n);
-size_t				ft_absll(long long n);
 long long			ft_atoll(char const *s);
 char				*ft_lltoa(long long n);
 void				ft_putnbrll(long long n);
@@ -107,13 +105,21 @@ t_list				*fprint_char_specifier(va_list argptr);
 t_list				*fprint_dash_specifier(void);
 void				fprint(const char *format, ...);
 void				fprint_fd(int fd, const char *format, ...);
-int					ft_max_i(int n1, int n2);
-int					ft_min_i(int n1, int n2);
 size_t				count_words(char **arr);
 void				ft_lstdel_fag(t_list **list);
 int					ft_atoi_base(const char *str, int base);
+size_t				ft_countwords(char *str, char sep);
 int					ft_mini(int a, int b);
+int					ft_maxi(int a, int b);
 float				ft_minf(float a, float b);
+float				ft_maxf(float a, float b);
+double				ft_mind(double a, double b);
+double				ft_maxd(double a, double b);
+long long			ft_minll(long long a, long long b);
+long long			ft_maxll(long long a, long long b);
+int					ft_absi(int nbr);
 float				ft_absf(float nbr);
+double				ft_absd(double nbr);
+long long			ft_absll(long long nbr);
 
 #endif
