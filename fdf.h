@@ -32,7 +32,10 @@
 # define KEY_X			7
 # define KEY_Y			16
 # define KEY_Z			6
+# define KEY_P			35
 # define Z_SCALE		1.1
+# define TRUE_ISO		1
+# define ISO			0
 
 # include "libft/libft.h"
 # include "mlx/mlx.h"
@@ -56,6 +59,8 @@ typedef struct	s_posi
 typedef struct	s_fdf
 {
 	int		fd;
+	int		projection;
+	int		read_till_end;
 	int		color_exists;
 	int		is_need_to_redraw;
 	int		init_flag;

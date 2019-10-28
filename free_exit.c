@@ -88,10 +88,11 @@ void		free_exit(t_fdf *s, char *message)
 			delete_posi_arr(&(s->cpy), s->arr_y_size);
 		if (s->line)
 			ft_strdel(&(s->line));
-		if (s->win)
-			s->win = NULL;
-		if (s->mlx)
-			s->mlx = NULL;
+		if (s->read_till_end)
+		{
+			while (gnl(s->fd, &(s->line)))
+				ft_strdel(&(s->line));
+		}
 		free(s);
 	}
 	if (message)

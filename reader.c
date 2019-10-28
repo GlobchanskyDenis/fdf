@@ -114,6 +114,7 @@ void			read_file(t_fdf *s)
 	if (!(lst = ft_lstnew_fag(NULL, 0)))
 		free_exit(s, "read_file - cannot create node");
 	s->lst = lst;
+	s->read_till_end = 1;
 	while (gnl(s->fd, &line) > 0)
 	{
 		if (s->arr_x_size == 0)
@@ -126,6 +127,7 @@ void			read_file(t_fdf *s)
 		lst = lst->next;
 		s->arr_y_size++;
 	}
+	s->read_till_end = 0;
 	if (!(s->pos = make_pos_2arr(s->lst, s)))
 		free_exit(s, "read_file - cannot create pos_arr");
 }

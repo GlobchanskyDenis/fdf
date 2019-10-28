@@ -21,9 +21,18 @@ static void	iso_convert_dot(int x, int y, t_pos dot, t_fdf *s)
 	if (!(dst = &((s->cpy)[y][x])))
 		free_exit(s, "iso_convert - empty pointer returned");
 	s->scale = (s->scale < 0.05) ? 0.05 : s->scale;
-	dst->y = (int)(sin(0.523599) * s->scale * (dot.x + dot.y) - \
-			dot.z * s->scale);
-	dst->x = (int)(cos(0.523599) * s->scale * (dot.x - dot.y));
+	if (s->projection == TRUE_ISO)
+	{
+		dst->y = (int)(sin(0.523599) * s->scale * (dot.x + dot.y) - \
+				dot.z * s->scale);
+		dst->x = (int)(cos(0.523599) * s->scale * (dot.x - dot.y));
+	}
+	if (s->projection == ISO)
+	{
+		dst->y = (int)(sin(0.46373398) * s->scale * (dot.x + dot.y) - \
+				dot.z * s->scale);
+		dst->x = (int)(cos(0.46373398) * s->scale * (dot.x - dot.y));
+	}
 }
 
 void		iso_convert_array(t_fdf *s)
@@ -62,12 +71,6 @@ void		draw_menu(t_fdf *s)
 {
 	if (!s)
 		free_exit(s, "draw_menu - empty pointer found");
-	mlx_string_put(s->mlx, s->win, 30, 30, WHITE, "scale    = ");
-	mlx_string_put(s->mlx, s->win, 30, 50, WHITE, "camera x = ");
-	mlx_string_put(s->mlx, s->win, 30, 70, WHITE, "camera y = ");
-	mlx_string_put(s->mlx, s->win, 30, 90, WHITE, "angle x  = ");
-	mlx_string_put(s->mlx, s->win, 30, 110, WHITE, "angle y  = ");
-	mlx_string_put(s->mlx, s->win, 30, 130, WHITE, "angle z  = ");
 	s->line = ft_itoa(s->scale);
 	mlx_string_put(s->mlx, s->win, 140, 30, WHITE, s->line);
 	ft_strdel(&(s->line));
@@ -82,6 +85,9 @@ void		draw_menu(t_fdf *s)
 	ft_strdel(&(s->line));
 	s->line = ft_itoa((int)(s->angle.y * 100 / 6.3));
 	mlx_string_put(s->mlx, s->win, 140, 110, WHITE, s->line);
+	ft_strdel(&(s->line));
+	s->line = ft_itoa((int)(s->angle.z * 100 / 6.3));
+	mlx_string_put(s->mlx, s->win, 140, 130, WHITE, s->line);
 	ft_strdel(&(s->line));
 }
 
