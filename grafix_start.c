@@ -9,9 +9,9 @@ static void	get_scale(t_fdf *s)
 	size.x = ft_absd(s->max.x - s->min.x);
 	size.y = ft_absd(s->max.y - s->min.y);
 	if (size.x > size.y)
-		s->scale = (double)WIN_SIZE_HOR / 2 / size.x;
+		s->scale = (double)WIN_SIZE_HOR / 3 / size.x;
 	else
-		s->scale = (double)WIN_SIZE_VERT / 2 / size.y;
+		s->scale = (double)WIN_SIZE_VERT / 3 / size.y;
 }
 
 static void	set_point_color(t_fdf *s, t_posi *dst, t_pos *src)

@@ -2,8 +2,8 @@
 # define FDF_H
 # define BUFF_SIZE		10
 # define FD_LIMIT		100
-# define WIN_SIZE_HOR	1300
-# define WIN_SIZE_VERT	1300
+# define WIN_SIZE_HOR	900
+# define WIN_SIZE_VERT	900
 # define ESCAPE			53
 # define BLUE			0x0000FF
 # define RED			0xFF0000
