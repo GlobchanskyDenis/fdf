@@ -56,7 +56,7 @@ fclean : clean
 			@rm -rf $(NAME).dSYM
 
 proj :
-			@./$(NAME) maps/t1.fdf  #test_maps/42.fdf #src.txt   maps/t1.fdf
+			@valgrind ./$(NAME) test_maps/42.fdf  #test_maps/42.fdf #src.txt   maps/t1.fdf
 
 all : 		$(NAME)
 

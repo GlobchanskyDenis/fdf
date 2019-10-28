@@ -90,7 +90,7 @@ void		free_exit(t_fdf *s, char *message)
 			ft_strdel(&(s->line));
 		if (s->read_till_end)
 		{
-			while (gnl(s->fd, &(s->line)))
+			while (gnl(s->fd, &(s->line)) > 0)
 				ft_strdel(&(s->line));
 		}
 		free(s);

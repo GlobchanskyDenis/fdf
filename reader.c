@@ -91,6 +91,7 @@ static t_pos	**make_pos_2arr(t_list *lst, t_fdf *s)
 	if (!(dst = (t_pos **)malloc(sizeof(t_pos *) * (s->arr_y_size + 1))))
 		free_exit(s, "make_pos_2arr - malloc returned null");
 	ft_bzero(dst, sizeof(t_pos *) * (s->arr_y_size + 1));
+	s->pos = dst;
 	i = -1;
 	while (++i < s->arr_y_size)
 	{
