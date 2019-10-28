@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rgb.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsabre-c <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/28 14:23:23 by bsabre-c          #+#    #+#             */
+/*   Updated: 2019/10/28 14:23:25 by bsabre-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static int	get_red(double z, t_fdf *s)
@@ -27,10 +39,10 @@ static int	get_green(double z, t_fdf *s)
 		return ((int)((double)255 * (1 - persent)));
 	}
 	if (z == 0)
-			return (255);
+		return (255);
 	if (z < 0 && z > s->min.z / 3)
 	{
-		min_z = - s->min.z;
+		min_z = -s->min.z;
 		z = -z;
 		persent = 1 - z / (min_z / 3);
 		return ((int)((double)255 * persent));

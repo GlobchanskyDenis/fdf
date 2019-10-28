@@ -1,25 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redraw.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsabre-c <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/28 14:23:13 by bsabre-c          #+#    #+#             */
+/*   Updated: 2019/10/28 14:23:14 by bsabre-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-static void iso_convert_dot(int x, int y, t_fdf *s)
+static void	iso_convert_dot(int x, int y, t_pos dot, t_fdf *s)
 {
-	t_pos	**pos;
-	t_posi	**cpy;
+	t_posi	*dst;
 
 	if (!s)
 		free_exit(s, "iso_convert - empty pointer found");
-	pos = s->pos;
-	cpy = s->cpy;
-	if (!pos || !cpy)
-		free_exit(s, "iso_convert - empty array pointer found");
+	if (!(dst = &((s->cpy)[y][x])))
+		free_exit(s, "iso_convert - empty pointer returned");
 	s->scale = (s->scale < 0.05) ? 0.05 : s->scale;
-	cpy[y][x].y = (int)(sin(0.523599) * s->scale * (pos[y][x].x + pos[y][x].y) - pos[y][x].z * s->scale); // s->z_scale
-	cpy[y][x].x = (int)(cos(0.523599) * s->scale * (pos[y][x].x - pos[y][x].y));
+	dst->y = (int)(sin(0.523599) * s->scale * (dot.x + dot.y) - \
+			dot.z * s->scale);
+	dst->x = (int)(cos(0.523599) * s->scale * (dot.x - dot.y));
 }
 
 void		iso_convert_array(t_fdf *s)
 {
 	int		i;
 	int		j;
+	t_pos	dot;
 
 	if (!s)
 		free_exit(s, "iso_convert_array - empty pointer found");
@@ -29,12 +40,10 @@ void		iso_convert_array(t_fdf *s)
 		j = -1;
 		while (++j < s->arr_x_size)
 		{
-			iso_convert_dot(j, i, s);
-			rotation(i, j, s);
-			
+			dot = rotation(i, j, s);
+			iso_convert_dot(j, i, dot, s);
 		}
 	}
-	ft_bzero(&(s->angle), sizeof(t_pos));
 }
 
 static int	is_can_put_line(t_posi a, t_posi b, t_fdf *s)
@@ -47,6 +56,33 @@ static int	is_can_put_line(t_posi a, t_posi b, t_fdf *s)
 			b.y >= -s->shift_y && b.y <= WIN_SIZE_VERT - s->shift_y))
 		return (1);
 	return (0);
+}
+
+void		draw_menu(t_fdf *s)
+{
+	if (!s)
+		free_exit(s, "draw_menu - empty pointer found");
+	mlx_string_put(s->mlx, s->win, 30, 30, WHITE, "scale    = ");
+	mlx_string_put(s->mlx, s->win, 30, 50, WHITE, "camera x = ");
+	mlx_string_put(s->mlx, s->win, 30, 70, WHITE, "camera y = ");
+	mlx_string_put(s->mlx, s->win, 30, 90, WHITE, "angle x  = ");
+	mlx_string_put(s->mlx, s->win, 30, 110, WHITE, "angle y  = ");
+	mlx_string_put(s->mlx, s->win, 30, 130, WHITE, "angle z  = ");
+	s->line = ft_itoa(s->scale);
+	mlx_string_put(s->mlx, s->win, 140, 30, WHITE, s->line);
+	ft_strdel(&(s->line));
+	s->line = ft_itoa(s->shift_x);
+	mlx_string_put(s->mlx, s->win, 140, 50, WHITE, s->line);
+	ft_strdel(&(s->line));
+	s->line = ft_itoa(s->shift_y);
+	mlx_string_put(s->mlx, s->win, 140, 70, WHITE, s->line);
+	ft_strdel(&(s->line));
+	s->line = ft_itoa((int)(s->angle.x * 100 / 6.3));
+	mlx_string_put(s->mlx, s->win, 140, 90, WHITE, s->line);
+	ft_strdel(&(s->line));
+	s->line = ft_itoa((int)(s->angle.y * 100 / 6.3));
+	mlx_string_put(s->mlx, s->win, 140, 110, WHITE, s->line);
+	ft_strdel(&(s->line));
 }
 
 void		redraw(t_fdf *s)
@@ -65,9 +101,11 @@ void		redraw(t_fdf *s)
 		j = -1;
 		while (++j < s->arr_x_size)
 		{
-			if (j < s->arr_x_size - 1 && is_can_put_line(arr[i][j], arr[i][j + 1], s))	
+			if (j < s->arr_x_size - 1 && \
+					is_can_put_line(arr[i][j], arr[i][j + 1], s))
 				draw_line(arr[i][j], arr[i][j + 1], s);
-			if (i < s->arr_y_size - 1 && is_can_put_line(arr[i][j], arr[i + 1][j], s))	
+			if (i < s->arr_y_size - 1 && \
+					is_can_put_line(arr[i][j], arr[i + 1][j], s))
 				draw_line(arr[i][j], arr[i + 1][j], s);
 		}
 	}

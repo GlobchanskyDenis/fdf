@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   grafix_start.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsabre-c <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/28 14:22:31 by bsabre-c          #+#    #+#             */
+/*   Updated: 2019/10/28 14:22:32 by bsabre-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static void	get_scale(t_fdf *s)
@@ -27,7 +39,6 @@ static void	set_point_color(t_fdf *s, t_posi *dst, t_pos *src)
 	}
 	else
 		dst->color = get_point_color(src->z, s);
-	//dst->z = src->z;
 }
 
 static void	make_cpy_arr(t_fdf *s)
@@ -41,14 +52,14 @@ static void	make_cpy_arr(t_fdf *s)
 		free_exit(s, "start_calc - malloc error");
 	ft_bzero(s->cpy, sizeof(t_posi *) * (s->arr_y_size + 1));
 	i = -1;
-	while(++i < s->arr_y_size)
+	while (++i < s->arr_y_size)
 	{
 		if (!(s->cpy[i] = (t_posi *)malloc(sizeof(t_posi) * s->arr_x_size)))
 			free_exit(s, "start_calc - malloc error");
 		ft_bzero(s->cpy[i], sizeof(t_posi) * s->arr_x_size);
 		j = -1;
 		while (++j < s->arr_x_size)
-		set_point_color(s, &(s->cpy[i][j]), &(s->pos[i][j]));
+			set_point_color(s, &(s->cpy[i][j]), &(s->pos[i][j]));
 	}
 	s->cpy[i] = NULL;
 }
@@ -57,12 +68,9 @@ void		start_calc(t_fdf *s)
 {
 	if (!s)
 		free_exit(s, "start_calc - empty pointer found");
-	s->z_scale = 0.3;
-	//s->angle = 0.523599;
 	s->is_need_to_redraw = 1;
 	s->shift_x = WIN_SIZE_HOR / 2;
 	s->shift_y = WIN_SIZE_VERT / 2;
 	make_cpy_arr(s);
-	//iso_convert_array(s);
 	get_scale(s);
 }

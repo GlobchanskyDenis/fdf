@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsabre-c <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/28 14:36:30 by bsabre-c          #+#    #+#             */
+/*   Updated: 2019/10/28 14:36:33 by bsabre-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FDF_H
 # define FDF_H
 # define BUFF_SIZE		10
@@ -20,12 +32,13 @@
 # define KEY_X			7
 # define KEY_Y			16
 # define KEY_Z			6
+# define Z_SCALE		1.1
 
 # include "libft/libft.h"
 # include "mlx/mlx.h"
 # include <math.h>
 
-typedef struct 	s_pos
+typedef struct	s_pos
 {
 	double	x;
 	double	y;
@@ -33,7 +46,7 @@ typedef struct 	s_pos
 	int		color;
 }				t_pos;
 
-typedef struct s_posi
+typedef struct	s_posi
 {
 	int		x;
 	int		y;
@@ -52,7 +65,6 @@ typedef struct	s_fdf
 	int		arr_y_size;
 	int		shift_x;
 	int		shift_y;
-	double	z_scale;
 	double	scale;
 	t_pos	**pos;
 	t_posi	**cpy;
@@ -63,33 +75,23 @@ typedef struct	s_fdf
 	void	*win;
 }				t_fdf;
 
-void		draw_line(t_posi a, t_posi b, t_fdf *s);	//	draw_line.c
-
-void		delete_arr(char ***char_arr);		//	free_exit.c
-void		free_exit(t_fdf *s, char *message);	//	free_exit.c
-
-int			gnl(int const fd, char **line);		//	gnl.c
-
-void		set_minmax_xy(t_pos pos, t_fdf *s);	//	minmax.c
-void		set_minmax_z(double z, t_fdf *s);	//	minmax.c
-
-void		start_calc(t_fdf *s);				//	start_calc.c
-
-int			key_hook(int key, t_fdf *s);					//	hooks.c
-int			mouse_hook(int param, int x, int y, t_fdf *s);	//	hooks.c
-int			loop_hook(t_fdf *s);							//	hooks.c
-
-void		read_file(t_fdf *s);				//	reader.c
-
-void		iso_convert_array(t_fdf *s);  		//	redraw.c
-void		redraw(t_fdf *s);					//	redraw.c
-
-int			get_point_color(double z, t_fdf *s); /// rgb.c
-
-void		rotation(int i, int j, t_fdf *s);
-
-//int			get_red(float z, t_fdf *s);
-//int			get_green(float z, t_fdf *s);
-//int			get_blue(float z, t_fdf *s);
+void			draw_line(t_posi a, t_posi b, t_fdf *s);
+void			delete_arr(char ***char_arr);
+void			free_exit(t_fdf *s, char *message);
+int				gnl(int const fd, char **line);
+void			set_minmax_xy(t_pos pos, t_fdf *s);
+void			set_minmax_z(double z, t_fdf *s);
+void			start_calc(t_fdf *s);
+int				key_hook(int key, t_fdf *s);
+int				mouse_hook(int param, int x, int y, t_fdf *s);
+int				loop_hook(t_fdf *s);
+void			read_file(t_fdf *s);
+void			iso_convert_array(t_fdf *s);
+void			draw_menu(t_fdf *s);
+void			redraw(t_fdf *s);
+int				get_point_color(double z, t_fdf *s);
+t_pos			rotation(int i, int j, t_fdf *s);
+void			z_decrease(t_pos **arr, t_fdf *s);
+void			z_increase(t_pos **arr, t_fdf *s);
 
 #endif

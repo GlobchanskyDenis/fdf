@@ -73,7 +73,8 @@ static void		loop(t_fdf *s)
 		free_exit(s, "loop - null pointer found");
 	start_calc(s);
 	if (!(s->mlx = mlx_init()) || \
-		!(s->win = mlx_new_window(s->mlx, WIN_SIZE_HOR, WIN_SIZE_VERT, "fdf by bsabre-c")))
+		!(s->win = mlx_new_window(s->mlx, WIN_SIZE_HOR, WIN_SIZE_VERT, \
+			"fdf by bsabre-c & forange-")))
 		free_exit(s, "loop - error in opening window");
 	mlx_loop_hook(s->mlx, loop_hook, s);
 	mlx_key_hook(s->win, key_hook, s);
@@ -90,12 +91,6 @@ int				main(int ac, char **av)
 	if (!(s = create_fdf_struct(av)))
 		free_exit(s, "create_fdf_struct returned null");
 	read_file(s);
-	//tmp_write_pos_arr(s, s->pos);
-	//fprint("arr x_size %d y_size %d\n", s->arr_x_size, s->arr_y_size);
-	//fprint("min xyz\t%d\t%d\t%d\n", (int)s->min.x, (int)s->min.y, \
-	//	(int)s->min.z);
-	//fprint("max xyz\t%d\t%d\t%d\n", (int)s->max.x, (int)s->max.y, \
-	//	(int)s->max.z);
 	loop(s);
 	free_exit(s, NULL);
 	return (0);

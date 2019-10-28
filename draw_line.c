@@ -1,37 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_line.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsabre-c <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/28 14:22:06 by bsabre-c          #+#    #+#             */
+/*   Updated: 2019/10/28 14:22:09 by bsabre-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static int		get_light(int start, int end, double percentage)
 {
-    return ((int)((1 - percentage) * start + percentage * end));
+	return ((int)((1 - percentage) * start + percentage * end));
 }
 
 static double	percent(int start, int end, int current)
 {
-    double placement;
-    double distance;
+	double placement;
+	double distance;
 
-    placement = current - start;
-    distance = end - start;
-    return ((distance == 0) ? 1.0 : (placement / distance));
+	placement = current - start;
+	distance = end - start;
+	return ((distance == 0) ? 1.0 : (placement / distance));
 }
 
-static int		get_color(t_posi current, t_posi start, t_posi end, t_posi delta)
+static int		get_color(t_posi current, t_posi start, t_posi end, \
+		t_posi delta)
 {
-    int     red;
-    int     green;
-    int     blue;
-    double  percentage;
+	int		red;
+	int		green;
+	int		blue;
+	double	percentage;
 
-    if (current.color == end.color)
-        return (current.color);
-    if (delta.x > delta.y)
-        percentage = percent(start.x, end.x, current.x);
-    else
-        percentage = percent(start.y, end.y, current.y);
-    red = get_light((start.color >> 16) & 0xFF, (end.color >> 16) & 0xFF, percentage);
-    green = get_light((start.color >> 8) & 0xFF, (end.color >> 8) & 0xFF, percentage);
-    blue = get_light(start.color & 0xFF, end.color & 0xFF, percentage);
-    return ((red << 16) | (green << 8) | blue);
+	if (current.color == end.color)
+		return (current.color);
+	if (delta.x > delta.y)
+		percentage = percent(start.x, end.x, current.x);
+	else
+		percentage = percent(start.y, end.y, current.y);
+	red = get_light((start.color >> 16) & 0xFF, (end.color >> 16) & 0xFF, \
+			percentage);
+	green = get_light((start.color >> 8) & 0xFF, (end.color >> 8) & 0xFF, \
+			percentage);
+	blue = get_light(start.color & 0xFF, end.color & 0xFF, percentage);
+	return ((red << 16) | (green << 8) | blue);
 }
 
 static void		logic(t_posi *a, t_posi *delta, t_posi *sign, int *error)
